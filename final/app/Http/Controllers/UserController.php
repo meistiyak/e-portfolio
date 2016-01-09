@@ -39,10 +39,12 @@ class UserController extends Controller
         if($_FILES['user_img']['name'] != null)
         {
             $path= base_path().'/public/profile/dist/img/'.$_FILES['user_img']['name'];
-            //move_uplaoded_file($_FILES['user_img']['tmp_name'], $path);
-            $data['id']=$request->user_id;
-            $data['user_img']=$_FILES['user_img']['name'];
-            //dd($data);
+            move_uplaoded_file($_FILES['user_img']['tmp_name'], $path);
+            $user = Auth::user();
+            $user_img=$_FILES['user_img']['name'];
+            DB::table('users')
+            ->where('id', $user->id)
+            ->update(['avatar' => $user_img]);
         }
     }
 
